@@ -29,6 +29,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            cursor: none;
         }
 
         .stars {
@@ -108,7 +109,7 @@
             width: 350px;
             height: 2px;
             opacity: 0;
-            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 8px white;
             animation: shootingStarAnimation 1s linear forwards;
             transform-origin: left center;
         }
@@ -241,19 +242,24 @@
     for (let i = 0; i < 40; i++) {
         createDustParticles()
     }
-
-    document.body.style.cursor = 'none';
 </script>
 
 <!-- JavaScript for shooting stars -->
 <script>
+    function randomColor() {
+        const hue = Math.floor(Math.random() * 360);
+        const saturation = Math.floor(Math.random() * 40) + 60; // 60–100%
+        const lightness = Math.floor(Math.random() * 30) + 60;  // 60–90%
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
+
     function createShootingStar() {
         const shootingStar = document.createElement('div');
         shootingStar.classList.add('shooting-star');
         document.body.appendChild(shootingStar);
 
-        let top = Math.random() * 50;
-        let left = Math.random() * 50;
+        let top = Math.random() * 100 - 25;
+        let left = Math.random() * 100 - 25;
 
         shootingStar.style.top = `${top}vh`;
         shootingStar.style.left = `${left}vw`;
@@ -261,12 +267,15 @@
         const duration = Math.random() * 0.5 + 0.5;
         shootingStar.style.animationDuration = `${duration}s`;
 
+        shootingStar.style.backgroundColor = randomColor();
+
         setTimeout(() => {
             shootingStar.remove();
         }, duration * 1000);
     }
 
-    setInterval(createShootingStar, Math.random() * 25000 + 7500);
+    // Spawns at random intervals
+    setInterval(createShootingStar, Math.random() * 20000 + 7500);
 </script>
 
 </body>
