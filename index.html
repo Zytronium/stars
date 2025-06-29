@@ -184,7 +184,6 @@
                 opacity: 0;
             }
         }
-
     </style>
 </head>
 <body>
@@ -274,9 +273,30 @@
         }, duration * 1000);
     }
 
-    // Spawns at random intervals
-    setInterval(createShootingStar, Math.random() * 20000 + 7500);
-</script>
+    function startMeteorShower() {
+        const duration = Math.random() * 10000 + 5000; // 5s to 15s; constant for this shower
+        const rateRange = [25, 500]; // 0.025s to 0.5s; random for each star
+        const startTime = Date.now();
 
+        function shootStarDuringShower() {
+            // Repeat for the duration of `duration`
+            if (Date.now() - startTime < duration) {
+                createShootingStar();
+                setTimeout(shootStarDuringShower, Math.random() * (rateRange[1] - rateRange[0]) + rateRange[0]);
+            } else {
+                // `duration` has ended. Schedule the next meteor shower.
+                const MINUTE = 60000; // 60,000 ms; For readability
+                setTimeout(startMeteorShower, Math.random() * (2 * MINUTE) + MINUTE); // 1m to 3m
+            }
+        }
+        shootStarDuringShower();
+    }
+
+    // Spawn a shooting star at random intervals from 7.5s to 30s
+    setInterval(createShootingStar, Math.random() * 22500 + 7500); // 7.5s to 30s
+
+    // Do a meteor shower every 1m to 3m, starting after 3s to 15s
+    setTimeout(startMeteorShower, Math.random() * 12000 + 3000); // 3s to 15s
+</script>
 </body>
 </html>
